@@ -1,0 +1,24 @@
+## Interface: 90001
+## Title: |cffff6633Genius|r
+## Title-zhCN: |cffff6633Genius - 核心|r
+## Notes: |cff99ff33Version|r 6.0
+## Version: 6.0
+## Author: Kinmeic
+
+#@no-lib-strip@
+embeds.xml
+#@end-no-lib-strip@
+
+indicator.xml
+switchs.xml
+
+Locale\enUS.lua
+Locale\zhCN.lua
+Locale\zhTW.lua
+
+Core.lua
+
+Elements\Notifier.lua
+Elements\CombatLog.lua
+Elements\Events.lua
+Elements\Functions.lua
