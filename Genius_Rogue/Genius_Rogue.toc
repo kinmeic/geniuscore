@@ -1,0 +1,10 @@
+## Interface: 90001
+## Title: |cffff6633Genius|r - |cfffff569Rogue|r
+## Title-zhTW: |cffff6633Genius|r - |cfffff569盜賊模塊|r
+## Title-zhCN: |cffff6633Genius|r - |cfffff569盗贼模块|r
+## Notes: |cff99ff33Version|r 5.4
+## Version: 5.4
+## Author: Kinmeic
+## Dependencies: Genius
+
+class.xml
