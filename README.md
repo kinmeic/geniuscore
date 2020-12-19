@@ -1,2 +1,2 @@
-# geniuscore
-genius core script written by lua.
+# geniuslua
+genius script written by lua.
