@@ -49,7 +49,6 @@ function lib:New(spellId, auraId, unit, filter, magiclock)
 	object.stack = 0 -- alias of count
 	object.duration = 0
 	object.refresh = 0	-- 刷新效果最大值
-	object.tick = 0
 	object.damage = 0
 	object.charges = 0
 	object.chargeleft = 0
@@ -82,7 +81,6 @@ function lib:NewAuras(auras, unit, filter)
 	object.stack = 0
 	object.duration = 0
 	object.refresh = 0	-- 刷新效果最大值
-	object.tick = 0
 	object.unit = unit or "target"
 	object.filter = filter or "HARMFUL"
 	object.affects = 0	-- 影响中的增益数量
@@ -112,12 +110,12 @@ function lib:Update(useId)
 	local costtable = {}
 	
 	if self.auras then
-		timeleft, count, duration, value = self:GetAuraByGroup()
+		timeleft, count, duration = self:GetAuraByGroup()
 	elseif useId then
-		timeleft, count, duration, value = self:GetAuraByID(self.aid)
+		timeleft, count, duration = self:GetAuraByID(self.aid)
 		self.CD, self.CDMAX = self:GetCooldown()
 	else
-		timeleft, count, duration, value = self:GetAura(self.aura)
+		timeleft, count, duration = self:GetAura(self.aura)
 		self.CD, self.CDMAX = self:GetCooldown()
 	end
 	
@@ -145,7 +143,6 @@ function lib:Update(useId)
 	self.stack = count or 0
 	self.duration = duration
 	self.refresh = duration * 0.3
-	self.tick = value
 	self.charges = charges
 	self.chargeleft = cstart
 	self.charges_fractional = charges_fractional
@@ -216,21 +213,20 @@ function lib:GetAura(aura)
 	
 	for i = 1, 40 do
 	
-		name, _, count, _, duration, expires, _, _, _, id, _, _, castbyplayer, _, tick = UnitAura(self.unit, i, self.filter)
+		name, _, count, _, duration, expires, _, _, _, id, _, _, castbyplayer, _, timeMod = UnitAura(self.unit, i, self.filter)
 		
 		if name and name == aura then
 			count = count or 0
-			tick = tick or 0
 			
 			if expires == 0 then
-				return 60, count, 60, tick
+				return 60, count, 60
 			else
-				return expires - GetTime(), count, duration, tick
+				return expires - GetTime(), count, duration
 			end
 		end
 	end
 
-	return 0, 0, 0, 0
+	return 0, 0, 0
 end
 
 -- 根据ID获取效果信息
@@ -238,29 +234,28 @@ function lib:GetAuraByID(aid)
 	local name, id, count, duration, expires, value = nil, nil, 0, 0, 0, 0
 	
 	for i = 1, 40 do
-		name, _, count, _, duration, expires, _, _, _, id, _, _, castbyplayer, _, tick = UnitAura(self.unit, i, self.filter)
+		name, _, count, _, duration, expires, _, _, _, id, _, _, castbyplayer, _, timeMod = UnitAura(self.unit, i, self.filter)
 		
 		if not name then return 0, 0, 0, 0 end
 		
 		if id == aid then
 			count = count or 0
-			tick = tick or 0
 			
 			if expires == 0 then
-				return 60, count, 60, tick
+				return 60, count, 60
 			else
-				return expires - GetTime(), count, duration, tick
+				return expires - GetTime(), count, duration
 			end
 		end
 	end
 	
-	return 0, 0, 0, 0
+	return 0, 0, 0
 end
 
 -- 获取效果组信息
 function lib:GetAuraByGroup()
-	local timeleft, count, duration, tick = 0, 0, 0, 0
-	local timeleft_one, count_one, duration_one, tick_one = 0, 0, 0, 0
+	local timeleft, count, duration = 0, 0, 0
+	local timeleft_one, count_one, duration_one = 0, 0, 0
 	
 	-- 清空表
 	for i = #self.affects_list, 1, -1 do  
@@ -270,7 +265,7 @@ function lib:GetAuraByGroup()
 	end
 	
 	for _, aura in ipairs(self.auras) do
-		timeleft_one, count_one, duration_one, tick_one = self:GetAura(aura)
+		timeleft_one, count_one, duration_one = self:GetAura(aura)
 		
 		if timeleft > 0 then
 			self.affects = self.affects + 1
@@ -278,13 +273,10 @@ function lib:GetAuraByGroup()
 			timeleft = timeleft_one
 			count = count_one
 			duration = duration_one
-			tick = tick_one
-
---			return timeleft, count, duration, tick
 		end
 	end
 	
-	return timeleft, count, duration, tick
+	return timeleft, count, duration
 end
 
 -- 效果存在
