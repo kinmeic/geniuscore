@@ -1,4 +1,4 @@
-﻿if not LibStub then error("Genius requires LibStub.") end
+if not LibStub then error("Genius requires LibStub.") end
 
 local Core = LibStub("AceAddon-3.0"):NewAddon("Genius", "AceConsole-3.0", "AceEvent-3.0", "AceHook-3.0")
 local L = LibStub("AceLocale-3.0"):GetLocale("Genius")
@@ -147,9 +147,9 @@ function Core:OnEnable()
 	self:RegisterEvent("PLAYER_ALIVE")					--玩家复活
 	self:RegisterEvent("PLAYER_REGEN_DISABLED")			--进入战斗
 	self:RegisterEvent("PLAYER_REGEN_ENABLED")			--脱离战斗
---	self:RegisterEvent("ACTIVE_TALENT_GROUP_CHANGED")	--玩家切换天赋事件
-	self:RegisterEvent("CHARACTER_POINTS_CHANGED")		--玩家可用天赋点数事件
+	self:RegisterEvent("ACTIVE_TALENT_GROUP_CHANGED")	--玩家切换天赋事件
 	self:RegisterEvent("UPDATE_SHAPESHIFT_FORM")		--玩家姿态切换事件
+	self:RegisterEvent("UPDATE_STEALTH")
 	self:RegisterEvent("UNIT_SPELLCAST_SENT")			--发送施法信息到服务器
 	self:RegisterEvent("UNIT_SPELLCAST_SUCCEEDED")		--施法成功
 	self:RegisterEvent("UNIT_SPELLCAST_FAILED", "UNIT_SPELLCAST_FAILED")		--施法失败
@@ -182,13 +182,16 @@ end
 
 -- 发送按键信息
 function Core:Press(keyName)
+	--keyName = "F5"
 	if keyName and keys[keyName] then
 		-- 有效按键
-		self.Indicator.Color:SetVertexColor(keys[keyName] / 255, 0.025, 0, 1)
+		self.Indicator.Color:SetColorTexture(keys[keyName] / 255, 0.025, 0, 1)
+		--self.Indicator.Color:SetVertexColor(keys[keyName] / 255, 0.025, 0, 1)
 		self.Label:SetText(keyName)
 	else
 		-- 无效按键
-		self.Indicator.Color:SetVertexColor(0, self.CombatTime == 0 and 0 or 0.025, 0, 1)
+		--self.Indicator.Color:SetVertexColor(0, self.CombatTime == 0 and 0 or 0.025, 0, 1)
+		self.Indicator.Color:SetColorTexture(0, self.CombatTime == 0 and 0 or 0.025, 0, 1)
 		self.Label:SetText(IsLeftShiftKeyDown() and L["Pending"] or L["Waiting"])
 	end
 end

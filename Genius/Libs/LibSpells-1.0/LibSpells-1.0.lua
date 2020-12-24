@@ -1,4 +1,4 @@
-﻿---------------------
+---------------------
 -- Local Definations
 ---------------------
 local MAJOR_VERSION = "LibSpells-1.0"
@@ -155,7 +155,8 @@ end
 -- 是否可以施法
 function lib:CanCast()
 	if self.sid then
-		if (not IsSpellKnown(self.sid)) then return end	--新增检查法术是否学习
+		
+--		if (not IsSpellKnown(self.sid)) then return end	--新增检查法术是否学习
 		local usable, nomana = IsUsableSpell(self.sid)
 		if (not usable) or nomana then return end
 		local start, duration = GetSpellCooldown(self.sid)
@@ -212,11 +213,11 @@ function lib:GetAura(aura)
 		return 0, 0, 0, 0
 	end
 	local name, id, count, duration, expires, value = nil, nil, 0, 0, 0, 0
-
+	
 	for i = 1, 40 do
 	
 		name, _, count, _, duration, expires, _, _, _, id, _, _, castbyplayer, _, tick = UnitAura(self.unit, i, self.filter)
-
+		
 		if name and name == aura then
 			count = count or 0
 			tick = tick or 0
@@ -226,11 +227,10 @@ function lib:GetAura(aura)
 			else
 				return expires - GetTime(), count, duration, tick
 			end
-		else
-			return 0, 0, 0, 0
 		end
-
 	end
+
+	return 0, 0, 0, 0
 end
 
 -- 根据ID获取效果信息

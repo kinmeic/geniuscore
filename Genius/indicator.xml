@@ -1,12 +1,13 @@
 <Ui xmlns="http://www.blizzard.com/wow/ui/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.blizzard.com/wow/ui/..\FrameXML\UI.xsd">
-	<Frame name="GeniusIndicator" frameLevel="1" alpha="1.0" toplevel="true" enableMouse="true">
+	<Frame name="GeniusIndicator" frameLevel="1" frameStrata="HIGH" alpha="1.0" toplevel="true" enableMouse="true">
 		<Size><AbsDimension x="18" y="18"/></Size>
 		<Anchors>
 			<Anchor point="TOPLEFT"><Offset><AbsDimension x="0" y="0"/></Offset></Anchor>
 		</Anchors>
 		<Layers>
 			<Layer level="OVERLAY">
-				<Texture name="$parentColor" file="Interface\ChatFrame\ChatFrameBackground" alphaMode="DISABLE" setAllPoints="true">
+				<Texture name="$parentColor" alphaMode="DISABLE" setAllPoints="true">
+					
 					<Color r="0" g="0" b="0" a="1"/>
 				</Texture>
 			</Layer>

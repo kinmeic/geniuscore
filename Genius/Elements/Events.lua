@@ -1,4 +1,4 @@
-﻿local select = select
+local select = select
 
 local Core = LibStub("AceAddon-3.0"):GetAddon("Genius")
 local L = LibStub("AceLocale-3.0"):GetLocale("Genius")
@@ -37,26 +37,15 @@ function Core:ACTIVE_TALENT_GROUP_CHANGED()
 	self.Talent = 0
 	
 	if level >= 10 then
-		local maxPointsSpend = 0
-
-		for i = 1, GetNumTalentTabs() do
-			local _, _, pointsSpent = GetTalentTabInfo(i)
-			
-			if maxPointsSpend < pointsSpent then
-				maxPointsSpend = pointsSpent
-				self.Talent = i
-			end
-		end
+		self.Talent = GetSpecialization()
 	end
 	
 	-- 更新开关状态和文本
 	self.UpdateSwitchs()
 
 	if self.Talent and self.Talent > 0 then
-		
-		
 		-- 设置提示信息
-		local talentName = select(1, GetTalentTabInfo(self.Talent)) or L["Normal"]
+		local talentName = select(2, GetSpecializationInfo(self.Talent)) or L["Normal"]
 		self:Printf(L["Change Talent"], talentName)
 		
 		-- 触发额外事件方法
@@ -66,17 +55,10 @@ function Core:ACTIVE_TALENT_GROUP_CHANGED()
 	end
 end
 
-function Core:CHARACTER_POINTS_CHANGED()
-	local unspentTalentPoints, learnedProfessions = UnitCharacterPoints("player")
-	if unspentTalentPoints == 0 then
-		self:ACTIVE_TALENT_GROUP_CHANGED()
-	end
-end
-
 function Core:UPDATE_SHAPESHIFT_FORM()
-	if GetShapeshiftForm() == self.Stance then return end
-	if self.ShowStanceNotice == false then return end
 	self.Stance = GetShapeshiftForm() or 0
+
+	if self.ShowStanceNotice == false then return end
 	if self.Stance ~= 0 then
 		local spellId = select(4, GetShapeshiftFormInfo(self.Stance))
 		local stanceName = GetSpellInfo(spellId) or L["Normal"]
@@ -84,6 +66,15 @@ function Core:UPDATE_SHAPESHIFT_FORM()
 	else
 		self:Printf(L["Change Stance"], L["Normal"])
 	end
+end
+
+function Core:UPDATE_STEALTH()
+--	self:UPDATE_SHAPESHIFT_FORM()
+--	if IsStealthed() == true then
+--		self.Stance = 1
+--	else
+--		self.Stance = 0
+--	end
 end
 
 function Core:UNIT_SPELLCAST_SENT(event, unit, spell)

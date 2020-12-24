@@ -1,4 +1,4 @@
-## Interface: 90001
+## Interface: 90000
 ## Title: |cffff6633Genius|r - |cfffff569Rogue|r
 ## Title-zhTW: |cffff6633Genius|r - |cfffff569盜賊模塊|r
 ## Title-zhCN: |cffff6633Genius|r - |cfffff569盗贼模块|r

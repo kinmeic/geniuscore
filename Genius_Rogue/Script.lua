@@ -1,4 +1,4 @@
-﻿if select(2, UnitClass("player")) ~= "ROGUE" then return end
+if select(2, UnitClass("player")) ~= "ROGUE" then return end
 
 local Core = LibStub("AceAddon-3.0"):GetAddon("Genius")
 
@@ -73,7 +73,7 @@ function Core:Manual()
 	end
 	
 	-- 更新变量
-	combo = GetComboPoints("player", "target")
+	combo = UnitPower("player", 4)
 	timepassed = GetTime() - Core.CombatTime
 	
 	if self.Talent == 0 then
