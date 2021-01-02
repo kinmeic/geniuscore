@@ -1,0 +1,9 @@
+## Interface: 90001
+## Title: |cffff6633Genius|r - |cfffff569Mage|r
+## Title-zhCN: |cffff6633Genius|r - |cfffff569法师模块|r
+## Notes: |cff99ff33Version|r 5.4
+## Version: 5.4
+## Author: Kinmeic
+## Dependencies: Genius
+
+class.xml
