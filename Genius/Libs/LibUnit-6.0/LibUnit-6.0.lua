@@ -220,8 +220,20 @@ function lib:IsSpecialUnit()
 end
 
 -- 是否正在施法
-function lib:Casting()
-	return UnitCastingInfo(self.unit) or UnitChannelInfo(self.unit) or SpellIsTargeting()
+function lib:Casting(timeleftMS)
+	if SpellIsTargeting() then
+		return true
+	elseif timeleftMS == nil or timeleftMS == 0 then
+		return UnitCastingInfo(self.unit) or UnitChannelInfo(self.unit)
+	end
+
+	local _, _, lagHomeMS, lagWorldMS = GetNetStats()
+	local endtimeMS = select(5, UnitCastingInfo(self.unit)) or select(5, UnitChannelInfo(self.unit))
+
+	if endtimeMS ~= nil then
+		endtimeMS = endtimeMS - math.max(lagHomeMS, lagWorldMS)
+		return endtimeMS - GetTime() * 1000 <= timeleftMS
+	end
 end
 
 -- 施法剩余时间
