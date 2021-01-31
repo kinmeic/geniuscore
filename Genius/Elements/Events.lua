@@ -11,6 +11,10 @@ function Core:PLAYER_ALIVE()
 	self:ACTIVE_TALENT_GROUP_CHANGED()
 end
 
+function Core:PLAYER_ENTERING_WORLD()
+	self:ACTIVE_TALENT_GROUP_CHANGED()
+end
+
 function Core:PLAYER_REGEN_DISABLED()
 	self:Print(L["Enter Combat"])
 	self:ShowNotifier(L["Enter Combat"])
@@ -32,13 +36,8 @@ function Core:PLAYER_REGEN_ENABLED()
 end
 
 function Core:ACTIVE_TALENT_GROUP_CHANGED()
-	local level = UnitLevel("player")
 	self.Stance = GetShapeshiftForm() or 0
-	self.Talent = 0
-	
-	if level >= 10 then
-		self.Talent = GetSpecialization()
-	end
+	self.Talent = GetSpecialization() or 0
 	
 	-- 更新开关状态和文本
 	self.UpdateSwitchs()
