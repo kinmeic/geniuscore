@@ -101,6 +101,8 @@ local OnCommand = function(msg)
 		Core:Manual(arg, param)
 	elseif arg == "auto" then
 		Core.Switch1:SetChecked(true)
+	elseif arg == "test" then
+		Core:Press(param)
 	else
 		Core:Manual(arg, param)
 	end
@@ -145,6 +147,7 @@ function Core:OnEnable()
 	-- 注册事件
 	self:RegisterEvent("VARIABLES_LOADED")				--参数加载
 	self:RegisterEvent("PLAYER_ALIVE")					--玩家复活
+	self:RegisterEvent("PLAYER_ENTERING_WORLD")
 	self:RegisterEvent("PLAYER_REGEN_DISABLED")			--进入战斗
 	self:RegisterEvent("PLAYER_REGEN_ENABLED")			--脱离战斗
 	self:RegisterEvent("ACTIVE_TALENT_GROUP_CHANGED")	--玩家切换天赋事件
